@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Venues</h3>
+<a href="/venues/add" class="btn btn-success btn-sm">
+  <i class="glyphicon glyphicon-plus"></i>
+  Add Venue
+</a>
+
+{% for venue in venues %}
+<div class="media">
+  <a href="/venues/{{venue.id}}">
+    <div class="media-body">
+      <h4>{{venue.name}}</h4>
+      <p>The Venue ID is: {{venue.id}}</p>
+    </div>
+  </a>
+</div>
+{% else %}
+<p>No Venues found</p>
+{% endfor %}
+
+{% if next_page_token %}
+<nav>
+  <ul class="pager">
+    <li><a href="?page_token={{next_page_token}}">More</a></li>
+  </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

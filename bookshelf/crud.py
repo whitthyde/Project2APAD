@@ -34,22 +34,6 @@ def list():
         next_page_token=next_page_token)
 # [END list]
 
-# @crud.route('/events')
-# def events():
-#     token = request.args.get('page_token', None)
-#     if token:
-#         token = token.encode('utf-8')
-
-#     events, next_page_token = get_model().list(cursor=token)
-
-#     return "Hello World"
-
-
-    # render_template(
-    #     "events.html",
-    #     events=events,
-    #     next_page_token=next_page_token)
-# [END list]
 
 @crud.route('/<id>')
 def view(id):

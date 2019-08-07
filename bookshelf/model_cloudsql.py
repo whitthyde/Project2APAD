@@ -125,20 +125,37 @@ def list(limit=10, cursor=None):
 # [END list]
 
 # [START list]
-def events_list(limit=50, cursor=None):
+def events_list(limit=10, cursor=None):
     cursor = int(cursor) if cursor else 0
     query = (Event.query
              .limit(limit)
              .offset(cursor))
-    books = builtin_list(map(from_sql, query.all()))
-    next_page = cursor + limit if len(books) == limit else None
-    return (books, next_page)
+    evnts = builtin_list(map(from_sql, query.all()))
+    next_page = cursor + limit if len(evnts) == limit else None
+    return (evnts, next_page)
+# [END list]
+
+def venues_list(limit=10, cursor=None):
+    cursor = int(cursor) if cursor else 0
+    query = (Venue.query
+             .limit(limit)
+             .offset(cursor))
+    vens = builtin_list(map(from_sql, query.all()))
+    next_page = cursor + limit if len(vens) == limit else None
+    return (vens, next_page)
 # [END list]
 
 
 # [START read]
 def read(id):
     result = Book.query.get(id)
+    if not result:
+        return None
+    return from_sql(result)
+# [END read]
+
+def readvenue(id):
+    result = Venue.query.get(id)
     if not result:
         return None
     return from_sql(result)
@@ -153,6 +170,13 @@ def create(data):
     return from_sql(book)
 # [END create]
 
+# [START create]
+def createvenue(data):
+    venue = Venue(**data)
+    db.session.add(venue)
+    db.session.commit()
+    return from_sql(venue)
+# [END create]
 
 # [START update]
 def update(data, id):
@@ -163,9 +187,22 @@ def update(data, id):
     return from_sql(book)
 # [END update]
 
+# [START update]
+def updatevenue(data, id):
+    venue = Venue.query.get(id)
+    for k, v in data.items():
+        setattr(venue, k, v)
+    db.session.commit()
+    return from_sql(venue)
+# [END update]
+
 
 def delete(id):
     Book.query.filter_by(id=id).delete()
+    db.session.commit()
+
+def deletevenue(id):
+    Venue.query.filter_by(id=id).delete()
     db.session.commit()
 
 

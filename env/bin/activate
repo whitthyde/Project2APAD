@@ -46,7 +46,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/whitthyde/Desktop/whyy/2-structured-data/env"
+VIRTUAL_ENV="/Users/whitthyde/Desktop/APADProject2/Project2APAD/2-structured-data/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

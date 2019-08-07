@@ -1,4 +1,4 @@
-
+#This file is the crud methods for the events
 
 from bookshelf import get_model
 from flask import Blueprint, redirect, render_template, request, url_for
@@ -7,47 +7,33 @@ from flask import Blueprint, redirect, render_template, request, url_for
 crude = Blueprint('crude', __name__)
 
 
-# [START list]
-# @crude.route("/")
-# def list():
-#     token = request.args.get('page_token', None)
-#     if token:
-#         token = token.encode('utf-8')
-
-#     books, next_page_token = get_model().list(cursor=token)
-
-#     return render_template(
-#         "list.html",
-#         books=books,
-#         next_page_token=next_page_token)
-# [END list]
-
-@crude.route('/events')
-def events():
+@crude.route('/')
+def eventslist():
     token = request.args.get('page_token', None)
     if token:
         token = token.encode('utf-8')
 
-    events, next_page_token = get_model().list(cursor=token)
+    events, next_page_token = get_model().events_list(cursor=token)
 
-    return "Hello World"
-
-
-    render_template(
-        "events.html",
+    return render_template(
+        "eventslist.html",
         events=events,
         next_page_token=next_page_token)
 
 
+    
+
+
+
 @crude.route('/<id>')
-def view(id):
-    book = get_model().read(id)
-    return render_template("view.html", book=book)
+def viewevents(id):
+    event = get_model().read(id)
+    return render_template("view.html", book=event)
 
 
 # [START add]
 @crude.route('/add', methods=['GET', 'POST'])
-def add():
+def addevents():
     if request.method == 'POST':
         data = request.form.to_dict(flat=True)
 
@@ -60,7 +46,7 @@ def add():
 
 
 @crude.route('/<id>/edit', methods=['GET', 'POST'])
-def edit(id):
+def editevents(id):
     book = get_model().read(id)
 
     if request.method == 'POST':
@@ -74,6 +60,6 @@ def edit(id):
 
 
 @crude.route('/<id>/delete')
-def delete(id):
+def deleteevents(id):
     get_model().delete(id)
     return redirect(url_for('.list'))
