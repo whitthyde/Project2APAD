@@ -13,11 +13,10 @@
 # limitations under the License.
 
 import bookshelf
-import config
+from bookshelf import app
 
 
-app = bookshelf.create_app(config)
-
+# app = bookshelf.create_app(config)
 
 # This is only used when running locally. When running live, gunicorn runs
 # the application.
