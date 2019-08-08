@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Event</h3>
+
+<div class="btn-group">
+  <a href="/users/{{user.id}}/edit" class="btn btn-primary btn-sm">
+    <i class="glyphicon glyphicon-edit"></i>
+    Edit users
+  </a>
+  <a href="/users/{{user.id}}/delete" class="btn btn-danger btn-sm">
+    <i class="glyphicon glyphicon-trash"></i>
+    Delete users
+  </a>
+</div>
+
+<div class="media">
+  <div class="media-body">
+    <h4 class="book-title">
+      {{user.firstname}} {{user.lastname}}
+      <small></small>
+    </h4>
+    <h5 class="book-author">Username: {{user.username}}</h5>
+    <p class="book-description">Email: {{user.email}}</p>
+
+  </div>
+</div>
+
+{% endblock %}

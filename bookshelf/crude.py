@@ -27,8 +27,8 @@ def eventslist():
 
 @crude.route('/<id>')
 def viewevents(id):
-    event = get_model().read(id)
-    return render_template("view.html", book=event)
+    event = get_model().readevent(id)
+    return render_template("eventsview.html", event=event)
 
 
 # [START add]
@@ -37,11 +37,11 @@ def addevents():
     if request.method == 'POST':
         data = request.form.to_dict(flat=True)
 
-        book = get_model().create(data)
+        event = get_model().createevent(data)
 
-        return redirect(url_for('.view', id=book['id']))
+        return redirect(url_for('.viewevents', id=event['id']))
 
-    return render_template("form.html", action="Add", book={})
+    return render_template("eventsform.html", action="Add", event={})
 # [END add]
 
 

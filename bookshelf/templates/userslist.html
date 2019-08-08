@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Users</h3>
+<a href="/users/add" class="btn btn-success btn-sm">
+  <i class="glyphicon glyphicon-plus"></i>
+  Add User
+</a>
+
+{% for user in users %}
+<div class="media">
+  <a href="/users/{{user.id}}">
+    <div class="media-body">
+      <h4>{{user.username}}</h4>
+      <p>{{user.email}}</p>
+    </div>
+  </a>
+</div>
+{% else %}
+<p>No Users found</p>
+{% endfor %}
+
+{% if next_page_token %}
+<nav>
+  <ul class="pager">
+    <li><a href="?page_token={{next_page_token}}">More</a></li>
+  </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

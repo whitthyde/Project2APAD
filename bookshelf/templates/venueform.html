@@ -1,0 +1,20 @@
+
+{# [START form] #}
+{% extends "base.html" %}
+
+{% block content %}
+<h3>{{action}} book</h3>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <div class="form-group">
+    <label for="name">Venue Name</label>
+    <input type="text" name="name" id="name" value="{{venue.name}}" class="form-control"/>
+  </div>
+
+
+  <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+{% endblock %}
+{# [END form] #}

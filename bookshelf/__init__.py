@@ -48,6 +48,9 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
     from .crudvens import crudvens
     app.register_blueprint(crudvens, url_prefix ='/venues')
 
+    from .crudu import crudu
+    app.register_blueprint(crudu, url_prefix ='/users')
+
     # Add a default root route.
     @app.route("/")
     def index():

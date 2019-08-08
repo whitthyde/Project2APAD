@@ -1,0 +1,39 @@
+{# [START form] #}
+{% extends "base.html" %}
+
+{% block content %}
+<h3>{{action}} Event</h3>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <div class="form-group">
+    <label for="username">User Name</label>
+    <input type="text" name="username" id="username" value="{{user.username}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="text" name="password" id="password" value="{{user.password}}" class="form-control"/>
+  </div>
+  
+  <div class="form-group">
+    <label for="email">Email</label>
+    <textarea name="email" id="email" class="form-control">{{user.email}}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="firstname">First Name</label>
+    <textarea name="firstname" id="firstname" class="form-control">{{user.firstname}}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="lastname">Last Name</label>
+    <textarea name="lastname" id="lastname" class="form-control">{{user.lastname}}</textarea>
+  </div>
+
+
+  <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+{% endblock %}
+{# [END form] #}

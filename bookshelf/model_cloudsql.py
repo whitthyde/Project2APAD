@@ -16,17 +16,19 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 
+###########################################################################################################################################################################
+##################################################                CRUD - Books                             ##########################################################################################################
+###############################################################################################################################################################################
+#####################################################################################################################################################
+
 builtin_list = list
 
-
 db = SQLAlchemy()
-
 
 def init_app(app):
     # Disable track modifications, as it unnecessarily uses memory.
     app.config.setdefault('SQLALCHEMY_TRACK_MODIFICATIONS', False)
     db.init_app(app)
-
 
 def from_sql(row):
     """Translates a SQLAlchemy model instance into a dictionary"""
@@ -35,6 +37,10 @@ def from_sql(row):
     data.pop('_sa_instance_state')
     return data
 
+###########################################################################################################################################################################
+##################################################                DECLARING - MODELS                           ##########################################################################################################
+###############################################################################################################################################################################
+#####################################################################################################################################################
 
 userevents = db.Table('userevents',
                       db.Column('event_id', db.SmallInteger(), db.ForeignKey('events.id'), primary_key=True),
@@ -61,11 +67,11 @@ class Book(db.Model):
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.SmallInteger(), primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=True, nullable=False)
-    firstname = db.Column(db.String(80), unique=True, nullable=False)
-    lastname = db.Column(db.String(80), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=False, nullable=False)
+    email = db.Column(db.String(120), unique=False, nullable=False)
+    password = db.Column(db.String(80), unique=False, nullable=False)
+    firstname = db.Column(db.String(80), unique=False, nullable=False)
+    lastname = db.Column(db.String(80), unique=False, nullable=False)
     events_users = db.relationship('EventsUsers', backref='User', lazy=True)
     userevents = db.relationship('Event', secondary=userevents, lazy='subquery',
                                  backref=db.backref('users', lazy=True))
@@ -80,23 +86,23 @@ class Venue(db.Model):
     events = db.relationship('Event', backref='venues', lazy=True)
     
     def __repr__(self):
-        return '<User %r>' % self.name
+        return '<Venue %r>' % self.name
 
 class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.SmallInteger(), primary_key=True)
-    hostname = db.Column(db.String(80), unique=True, nullable=False)
-    eventname = db.Column(db.String(120), unique=True, nullable=False)
-    description = db.Column(db.String(767), unique=True, nullable=False)
-    day = db.Column(db.DateTime(), unique=True, nullable=False)
-    timeslot = db.Column(db.SmallInteger(), unique=True, nullable=False)
-    currentusers = db.Column(db.SmallInteger(), unique=True, nullable=False)
-    maxusers = db.Column(db.SmallInteger(), unique=True, nullable=False)
-    price = db.Column(db.Float(7,2), unique=True, nullable=True)
+    hostname = db.Column(db.String(80), unique=False, nullable=False)
+    eventname = db.Column(db.String(120), unique=False, nullable=False)
+    description = db.Column(db.String(767), unique=False, nullable=False)
+    day = db.Column(db.DateTime(), unique=False, nullable=False)
+    timeslot = db.Column(db.SmallInteger(), unique=False, nullable=False)
+    currentusers = db.Column(db.SmallInteger(), unique=False, nullable=False)
+    maxusers = db.Column(db.SmallInteger(), unique=False, nullable=False)
+    price = db.Column(db.Float(7,2), unique=False, nullable=True)
     venue_id = db.Column(db.SmallInteger(),db.ForeignKey('venues.id'),nullable=False)
     events_users = db.relationship('EventsUsers', backref='Events', lazy=True)
     def __repr__(self):
-        return '<User %r>' % self.eventname
+        return '<Event %r>' % self.eventname
 
 
 class EventsUsers(db.Model):
@@ -106,12 +112,10 @@ class EventsUsers(db.Model):
     event_id = db.Column(db.SmallInteger(), db.ForeignKey('events.id'), nullable=False)
 
 
-
-
-# [END model]
-
-
-
+###########################################################################################################################################################################
+##################################################                CRUD - Books                     ##########################################################################################################
+###############################################################################################################################################################################
+#####################################################################################################################################################
 # [START list]
 def list(limit=10, cursor=None):
     cursor = int(cursor) if cursor else 0
@@ -124,28 +128,6 @@ def list(limit=10, cursor=None):
     return (books, next_page)
 # [END list]
 
-# [START list]
-def events_list(limit=10, cursor=None):
-    cursor = int(cursor) if cursor else 0
-    query = (Event.query
-             .limit(limit)
-             .offset(cursor))
-    evnts = builtin_list(map(from_sql, query.all()))
-    next_page = cursor + limit if len(evnts) == limit else None
-    return (evnts, next_page)
-# [END list]
-
-def venues_list(limit=10, cursor=None):
-    cursor = int(cursor) if cursor else 0
-    query = (Venue.query
-             .limit(limit)
-             .offset(cursor))
-    vens = builtin_list(map(from_sql, query.all()))
-    next_page = cursor + limit if len(vens) == limit else None
-    return (vens, next_page)
-# [END list]
-
-
 # [START read]
 def read(id):
     result = Book.query.get(id)
@@ -154,28 +136,12 @@ def read(id):
     return from_sql(result)
 # [END read]
 
-def readvenue(id):
-    result = Venue.query.get(id)
-    if not result:
-        return None
-    return from_sql(result)
-# [END read]
-
-
 # [START create]
 def create(data):
     book = Book(**data)
     db.session.add(book)
     db.session.commit()
     return from_sql(book)
-# [END create]
-
-# [START create]
-def createvenue(data):
-    venue = Venue(**data)
-    db.session.add(venue)
-    db.session.commit()
-    return from_sql(venue)
 # [END create]
 
 # [START update]
@@ -187,6 +153,117 @@ def update(data, id):
     return from_sql(book)
 # [END update]
 
+def delete(id):
+    Book.query.filter_by(id=id).delete()
+    db.session.commit()
+
+###########################################################################################################################################################################
+##################################################                CRUD - Users                             ##########################################################################################################
+###############################################################################################################################################################################
+#####################################################################################################################################################
+# [START list]
+def users_list(limit=10, cursor=None):
+    cursor = int(cursor) if cursor else 0
+    query = (User.query
+             .limit(limit)
+             .offset(cursor))
+    users = builtin_list(map(from_sql, query.all()))
+    next_page = cursor + limit if len(users) == limit else None
+    return (users, next_page)
+# [END list]
+
+def readuser(id):
+    result = User.query.get(id)
+    if not result:
+        return None
+    return from_sql(result)
+# [END read]
+# [START create]
+def createuser(data):
+    user = User(**data)
+    db.session.add(user)
+    db.session.commit()
+    return from_sql(user)
+# [END create]
+# [START update]
+def updateuser(data, id):
+    user = User.query.get(id)
+    for k, v in data.items():
+        setattr(user, k, v)
+    db.session.commit()
+    return from_sql(user)
+# [END update]
+def deleteuser(id):
+    User.query.filter_by(id=id).delete()
+    db.session.commit()
+
+###########################################################################################################################################################################
+##################################################                CRUD - Events                             ##########################################################################################################
+###############################################################################################################################################################################
+#####################################################################################################################################################
+# [START list]
+def events_list(limit=10, cursor=None):
+    cursor = int(cursor) if cursor else 0
+    query = (Event.query
+             .limit(limit)
+             .offset(cursor))
+    evnts = builtin_list(map(from_sql, query.all()))
+    next_page = cursor + limit if len(evnts) == limit else None
+    return (evnts, next_page)
+# [END list]
+
+def readevent(id):
+    result = Event.query.get(id)
+    if not result:
+        return None
+    return from_sql(result)
+# [END read]
+# [START create]
+def createevent(data):
+    event = Event(**data)
+    db.session.add(event)
+    db.session.commit()
+    return from_sql(event)
+# [END create]
+# [START update]
+def updateevent(data, id):
+    event = Event.query.get(id)
+    for k, v in data.items():
+        setattr(event, k, v)
+    db.session.commit()
+    return from_sql(event)
+# [END update]
+def deleteevent(id):
+    Event.query.filter_by(id=id).delete()
+    db.session.commit()
+
+###########################################################################################################################################################################
+##################################################                CRUD - Venues                             ##########################################################################################################
+###############################################################################################################################################################################
+#####################################################################################################################################################
+
+def venues_list(limit=10, cursor=None):
+    cursor = int(cursor) if cursor else 0
+    query = (Venue.query
+             .limit(limit)
+             .offset(cursor))
+    vens = builtin_list(map(from_sql, query.all()))
+    next_page = cursor + limit if len(vens) == limit else None
+    return (vens, next_page)
+# [END list]
+def readvenue(id):
+    result = Venue.query.get(id)
+    if not result:
+        return None
+    return from_sql(result)
+# [END read]
+# [START create]
+def createvenue(data):
+    venue = Venue(**data)
+    db.session.add(venue)
+    db.session.commit()
+    return from_sql(venue)
+# [END create]
 # [START update]
 def updatevenue(data, id):
     venue = Venue.query.get(id)
@@ -195,16 +272,16 @@ def updatevenue(data, id):
     db.session.commit()
     return from_sql(venue)
 # [END update]
-
-
-def delete(id):
-    Book.query.filter_by(id=id).delete()
-    db.session.commit()
-
 def deletevenue(id):
     Venue.query.filter_by(id=id).delete()
     db.session.commit()
 
+
+
+###########################################################################################################################################################################
+##################################################                CREATE DATABASE                ##########################################################################################################
+###############################################################################################################################################################################
+#####################################################################################################################################################
 
 def _create_database():
     """

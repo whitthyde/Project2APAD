@@ -1,0 +1,64 @@
+{# [START form] #}
+{% extends "base.html" %}
+
+{% block content %}
+<h3>{{action}} Event</h3>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <div class="form-group">
+    <label for="eventname">Event Name</label>
+    <input type="text" name="eventname" id="eventname" value="{{event.eventname}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="hostname">Host Name</label>
+    <input type="text" name="hostname" id="hostname" value="{{event.hostname}}" class="form-control"/>
+  </div>
+
+<!--   <div class="form-group">
+    <label for="day">Date</label>
+    <input type="date" name="day" id="day" value="{{event.day}}" class="form-control"/>
+  </div> -->
+
+  <label for="day">Date:</label>
+
+  <input type="date" id="day" name="day"
+         value="{{event.day}}"
+         min="2019-08-20" max="2021-12-31" class="form-control">
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea name="description" id="description" class="form-control">{{event.description}}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="timeslot">Timeslot (8-20)</label>
+    <textarea name="timeslot" id="timeslot" class="form-control">{{event.timeslot}}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="currentusers">Current Users</label>
+    <textarea name="currentusers" id="currentusers" class="form-control">{{event.currentusers}}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="maxusers">Max Users</label>
+    <textarea name="maxusers" id="maxusers" class="form-control">{{event.maxusers}}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="price">Price</label>
+    <textarea name="price" id="price" class="form-control">{{event.price}}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="venue_id">Venue ID</label>
+    <textarea name="venue_id" id="venue_id" class="form-control">{{event.venue_id}}</textarea>
+  </div>
+
+  <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+{% endblock %}
+{# [END form] #}

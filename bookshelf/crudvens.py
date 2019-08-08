@@ -31,26 +31,26 @@ def addvenue():
     if request.method == 'POST':
         data = request.form.to_dict(flat=True)
 
-        book = get_model().create(data)
+        venue = get_model().createvenue(data)
 
-        return redirect(url_for('.view', id=book['id']))
+        return redirect(url_for('.viewvenue', id=venue['id']))
 
-    return render_template("form.html", action="Add", book={})
+    return render_template("venueform.html", action="Add", venue={})
 # [END add]
 
 
 @crudvens.route('/<id>/edit', methods=['GET', 'POST'])
 def editvenue(id):
-    book = get_model().read(id)
+    venue = get_model().read(id)
 
     if request.method == 'POST':
         data = request.form.to_dict(flat=True)
 
-        book = get_model().update(data, id)
+        venue = get_model().update(data, id)
 
-        return redirect(url_for('.view', id=book['id']))
+        return redirect(url_for('.viewvenue', id=venue['id']))
 
-    return render_template("form.html", action="Edit", book=book)
+    return render_template("venueform.html", action="Edit", venue=venue)
 
 
 @crudvens.route('/<id>/delete')

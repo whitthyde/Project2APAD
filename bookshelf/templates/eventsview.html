@@ -1,0 +1,38 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Event</h3>
+
+<div class="btn-group">
+  <a href="/events/{{event.id}}/edit" class="btn btn-primary btn-sm">
+    <i class="glyphicon glyphicon-edit"></i>
+    Edit Event
+  </a>
+  <a href="/events/{{event.id}}/delete" class="btn btn-danger btn-sm">
+    <i class="glyphicon glyphicon-trash"></i>
+    Delete Event
+  </a>
+</div>
+
+<div class="media">
+  <div class="media-body">
+    <h4 class="book-title">
+      {{event.eventname}}
+      <small>{{event.day}}</small>
+    </h4>
+    <h5 class="book-author">Host: {{event.hostname}}</h5>
+    <p class="book-description">Description: {{event.description}}</p>
+    <br>
+    <h5 class="book-author">Timeslot {{event.timeslot}}</h5>
+    <h5 class="book-author">Current People in Event: {{event.currentusers}}</h5>
+    <h5 class="book-author">Capcity (Max People Allowed): {{event.maxusers}}</h5>
+    <br>
+    <h5 class="book-author">Venue ID: {{event.venue_id}}</h5>
+    <h5 class="book-author">Price: {{event.price}}</h5>
+
+  </div>
+</div>
+
+{% endblock %}
