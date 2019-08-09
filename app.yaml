@@ -18,6 +18,7 @@
 
 runtime: python
 env: flex
+api_version: 1
 entrypoint: gunicorn -b :$PORT main:app
 
 runtime_config:
