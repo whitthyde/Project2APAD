@@ -6,14 +6,24 @@
 <h3>Event</h3>
 
 <div class="btn-group">
+  {% if current_user.id == 6 %}
   <a href="/events/{{event.id}}/edit" class="btn btn-primary btn-sm">
     <i class="glyphicon glyphicon-edit"></i>
     Edit Event
   </a>
+  {% endif %}
+  <a href="/events/{{event.id}}/join" class="btn btn-info btn-sm">
+  <i class="glyphicon glyphicon-plus"></i>
+  Join this Event
+  </a>
+  {% if current_user.id == 6 %}
   <a href="/events/{{event.id}}/delete" class="btn btn-danger btn-sm">
     <i class="glyphicon glyphicon-trash"></i>
     Delete Event
   </a>
+
+
+  {% endif %}
 </div>
 
 <div class="media">

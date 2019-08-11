@@ -1,0 +1,30 @@
+{# [START form] #}
+{% extends "base.html" %}
+
+{% block content %}
+<h3>{{action}} Event by Venue and Date</h3>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <label for="day">Date:</label>
+
+  <input type="date" id="day" name="day"
+         value="day"
+         min="2019-08-20" max="2021-12-31" class="form-control">
+
+
+  <div class="form-group">
+    <label for="venue_id">Venue ID:</label>
+    <textarea name="venue_id" id="venue_id" class="form-control"></textarea>
+  </div>
+
+    <div class="form-group">
+    <label for="timeslot">Timeslot:</label>
+    <textarea name="timeslot" id="timeslot" class="form-control"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-success">Search</button>
+</form>
+
+{% endblock %}
+{# [END form] #}

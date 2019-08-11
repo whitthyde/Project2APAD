@@ -3,10 +3,26 @@
 {% block content %}
 
 <h3>Events</h3>
+{% if current_user.is_authenticated %}
 <a href="/events/add" class="btn btn-success btn-sm">
   <i class="glyphicon glyphicon-plus"></i>
   Add Event
 </a>
+{% endif %}
+<a href="/events/search" class="btn btn-primary btn-sm">
+  <i class="glyphicon glyphicon-calendar"></i>
+  Search for event by Venue on given Date & Time
+</a>
+<a href="/events/venuesearch" class="btn btn-info btn-sm">
+  <i class="glyphicon glyphicon-time"></i>
+  Timespot Availability at a certain venue
+</a>
+<a href="/events/timesearch" class="btn btn-warning btn-sm">
+  <i class="glyphicon glyphicon-check"></i>
+  
+  Display Venues available at certain timeslot
+</a>
+
 
 {% for event in events %}
 <div class="media">

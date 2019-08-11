@@ -18,12 +18,12 @@
       <h4>{{book.title}}</h4>
       <p>{{book.author}}</p>
     </div>
+
   </a>
 </div>
 {% else %}
 <p>No books found</p>
 {% endfor %}
-
 {% if next_page_token %}
 <nav>
   <ul class="pager">

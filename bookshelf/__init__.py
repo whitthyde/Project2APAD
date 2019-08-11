@@ -91,7 +91,7 @@ login_manager.login_message_category = 'info'
 # Add a default root route.
 @app.route("/")
 def index():
-    return redirect(url_for('crud.list'))
+    return redirect(url_for('crude.eventslist'))
 
 # Add an error handler. This is useful for debugging the live application,
 # however, you should disable the output of the exception for production

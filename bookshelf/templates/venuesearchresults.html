@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div>
+<h4>Available times:</h4>
+{% for time in times %}
+  <div>
+
+    <p>{{time}}:00</p>
+  </div>
+</div>
+{% else %}
+<p>No Times Available</p>
+{% endfor %}
+
+{% if next_page_token %}
+<nav>
+  <ul class="pager">
+    <li><a href="?page_token={{next_page_token}}">More</a></li>
+  </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

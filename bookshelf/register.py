@@ -40,3 +40,11 @@ def log_out():
 @login_required
 def account():
     return render_template('account.html', title='Account')
+
+@app.route("/account/myevents")
+@login_required
+def myevents():
+    user = current_user
+    events = get_model().see_my_events(current_user)
+    eventids = get_model().see_my_eventids(current_user)
+    return render_template('myevents.html', events=events,eventids=eventids)

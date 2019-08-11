@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+{% for event in events %}
+
+<div class="media">
+  <a href="/event/{{event.eventid}}">
+    <div class="media-body">
+    	<a href="/events/{{event.eventid}}">
+      <h4>Event Name: {{event}}</h4>
+    </div>
+
+  </a>
+</div>
+
+
+{% endfor %}
+<p>No events registered for</p>
+{% endblock content %}

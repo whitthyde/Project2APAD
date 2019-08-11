@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Available Venues at {{timeslot}}:00 on {{day}}</h3>
+
+{% for venue in venues %}
+<div class="media">
+  <a href="/events">
+    <div class="media-body">
+      <h4>{{venue.name}}</h4>
+      <p>The Venue ID is: {{venue.id}}</p>
+    </div>
+  </a>
+</div>
+{% else %}
+<p>No Venues found</p>
+{% endfor %}
+
+{% if next_page_token %}
+<nav>
+  <ul class="pager">
+    <li><a href="?page_token={{next_page_token}}">More</a></li>
+  </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

@@ -16,6 +16,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from bookshelf import login_manager
 from flask_login import UserMixin
+import os
+import urllib
+from flask import Flask, render_template, request, redirect
+import pymysql
+
+
+
+
+
 
 ###########################################################################################################################################################################
 ##################################################                User                          ##########################################################################################################
@@ -24,9 +33,6 @@ from flask_login import UserMixin
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-
-
 
 
 
@@ -86,7 +92,7 @@ class User(db.Model,UserMixin):
     password = db.Column(db.String(80), unique=False, nullable=False)
     firstname = db.Column(db.String(80), unique=False, nullable=False)
     lastname = db.Column(db.String(80), unique=False, nullable=False)
-    events_users = db.relationship('EventsUsers', backref='User', lazy=True)
+    events_users = db.relationship('EventsUsers', backref='users', lazy=True)
     userevents = db.relationship('Event', secondary=userevents, lazy='subquery',
                                  backref=db.backref('users', lazy=True))
     
@@ -114,7 +120,9 @@ class Event(db.Model):
     maxusers = db.Column(db.SmallInteger(), unique=False, nullable=False)
     price = db.Column(db.Float(7,2), unique=False, nullable=True)
     venue_id = db.Column(db.SmallInteger(),db.ForeignKey('venues.id'),nullable=False)
-    events_users = db.relationship('EventsUsers', backref='Events', lazy=True)
+    events_users = db.relationship('EventsUsers', backref='events', lazy=True)
+    userevents = db.relationship('User', secondary=userevents, lazy='subquery',
+                                 backref=db.backref('events', lazy=True))
     def __repr__(self):
         return '<Event %r>' % self.eventname
 
@@ -211,6 +219,45 @@ def deleteuser(id):
     User.query.filter_by(id=id).delete()
     db.session.commit()
 
+
+def join_event(event_id,user_id):
+    event = Event.query.get(event_id)
+    if not event:
+        return None
+
+    if event.currentusers == event.maxusers:
+        errorstring = "This event is already full"
+        return render_template('sqlerror.html', errorstring=errorstring)
+    user = User.query.get(user_id)
+    if not user:
+        return None
+    event.currentusers +=1
+    user.userevents.append(event)
+    db.session.commit()
+
+def see_my_events(user):
+    list_events = []
+    list_eventids = []
+    for event in user.userevents:
+        list_events.append(event.eventname)
+    # for event in user.userevents:
+    #     list_events.append(event.id)
+
+    return list_events
+
+def see_my_eventids(user):
+    list_events = []
+    list_eventids = []
+    for event in user.userevents:
+        list_events.append(event.id)
+    # for event in user.userevents:
+    #     list_events.append(event.id)
+
+    return list_events
+
+
+
+
 ###########################################################################################################################################################################
 ##################################################                CRUD - Events                             ##########################################################################################################
 ###############################################################################################################################################################################
@@ -250,6 +297,29 @@ def updateevent(data, id):
 def deleteevent(id):
     Event.query.filter_by(id=id).delete()
     db.session.commit()
+    
+def eventsearch(day,venue_id,timeslot=None):
+    if timeslot==None:
+        query = Event.query.filter_by(day=day).filter_by(venue_id=venue_id)
+        events = builtin_list(map(from_sql, query.all()))
+    else:
+        query = Event.query.filter_by(day=day).filter_by(venue_id=venue_id).filter_by(timeslot=timeslot)
+        events = builtin_list(map(from_sql, query.all()))
+    return events 
+
+def timesearch(day,timeslot):
+    venuequery= Venue.query
+    venues = venuequery.all()
+    query = Event.query.filter_by(day=day).filter_by(timeslot=timeslot)
+    events = query.all()
+    venues_booked = []
+    for event in events:
+        venues_booked.append(event.venue_id)
+    for venue in venues:
+        for booked in venues_booked:
+            if venue.id == booked:
+                venues.remove(venue)
+    return venues 
 
 ###########################################################################################################################################################################
 ##################################################                CRUD - Venues                             ##########################################################################################################
@@ -290,7 +360,20 @@ def deletevenue(id):
     Venue.query.filter_by(id=id).delete()
     db.session.commit()
 
-
+def venuesearch(day,venue_id):
+    venuequery= Venue.query
+    venues = venuequery.all()
+    query = Event.query.filter_by(day=day).filter_by(venue_id=venue_id)
+    events = query.all()
+    available_times = [8,9,10,11,12,13,14,15,16,17,18,19,20]
+    for venue in venues:
+        for event in events:
+            if event.venue_id == venue.id:
+                for time in available_times:
+                    if event.timeslot == time:
+                        available_times.remove(time)
+ 
+    return available_times 
 
 ###########################################################################################################################################################################
 ##################################################                CREATE DATABASE                ##########################################################################################################

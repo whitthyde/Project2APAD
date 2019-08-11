@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Hi {{ current_user.firstname }}</h1>
+    <h1>Hi {{ current_user.firstname }}, </h1>
     <h2>Here are your credentials: </h2>
     <bk>
-    <h3>Username: {{ current_user.username }}</h3>
-    <h3>Email: {{ current_user.email }}</h3>
+    <h4>Username: {{ current_user.username }}</h4>
+    <h4>Email: {{ current_user.email }}</h4>
 
+
+    <a href="/account/myevents" class="btn btn-info btn-sm">
+  	<i class="glyphicon glyphicon-th-list"></i>
+ 	See My Events
+ 	 </a>
 {% endblock content %}
