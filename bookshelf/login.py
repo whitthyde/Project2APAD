@@ -5,7 +5,6 @@ from .model_cloudsql import User, db
 from flask import Flask
 from bookshelf import bcrypt
 from flask_sqlalchemy import SQLAlchemy
-# from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user, logout_user, login_required
 from bookshelf.forms import RegistrationForm, LoginForm
 from flask import render_template, url_for, flash, redirect, request

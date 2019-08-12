@@ -1,5 +1,5 @@
 #This file is the crud methods for the events
-from flask import Flask
+from flask import Flask, flash
 from flask_sqlalchemy import SQLAlchemy
 from bookshelf import login_manager
 from flask_login import UserMixin
@@ -24,50 +24,10 @@ from flask_login import login_user, current_user, logout_user, login_required
 from datetime import date
 
 
-
 crude = Blueprint('crude', __name__)
-db = SQLAlchemy()
-# db = sqlalchemy.create_engine(
-#     # Equivalent URL:
-#     # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
-#     sqlalchemy.engine.url.URL(
-#         drivername='mysql+pymysql',
-#         username='root',
-#         password="texasfight",
-#         database="mydb2",
-#         query={
-#             'unix_socket': '/cloudsql/{}'.format("whydeyyanp2:us-central1:library")
-#         }
-#     ),
-#     # ... Specify additional properties here.
-#     # ...
-# )
 
 
-###########################################################################################################################################################################
-##################################################                Connecting to DB                          ##########################################################################################################
-###############################################################################################################################################################################
-#####################################################################################################################################################
-db_user = "root"
-db_password = "texasfight"
-db_name = "mydb2"
-db_connection_name = "whydeyyanp2:us-central1:library"
 
-def connect():
-   # When deployed to App Engine, the `GAE_ENV` environment variable will be
-    # set to `standard`
-    if os.environ.get('GAE_ENV') == 'standard':
-        unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        cnx = pymysql.connect(user=db_user, password=db_password, unix_socket=unix_socket, db=db_name)
-    else:
-        # If running locally, use the TCP connections instead
-        # Set up Cloud SQL Proxy (cloud.google.com/sql/docs/mysql/sql-proxy)
-        # so that your application can use 127.0.0.1:3306 to connect to your
-        # Cloud SQL instance
-        host = '127.0.0.1'
-        # cnx = pymysql.connect(user=db_user, password=db_password, host=host, db=db_name)
-        cnx = pymysql.connect(user=db_user, password=db_password, host=host, db=db_name)
-    return cnx
 
 
 ####################################################################################################################################################################################################################################################################################################################
@@ -113,26 +73,6 @@ def addevents():
     return render_template("eventsform.html", action="Add", event={})
 # [END add]
 
-# @crude.route('/add', methods=['GET', 'POST'])
-# def addevents():
-#     if request.method == 'POST':
-#         hostname = request.form['hostname']
-#         eventname = request.form['eventname']
-#         date = request.form['day']
-#         description = request.form['description']
-#         timeslot = request.form['timeslot']
-#         currentusers = request.form['currentusers']
-#         maxusers = request.form['maxusers']
-#         price = request.form['price']
-#         venue_id = request.form['venue_id']
-
-#         #(host, name, des,vID, date, time,currU, maxU)
-#         start_event(hostname,eventname,description, venue_id,date,timeslot,currentusers,maxusers,price)
-
-#         return redirect(url_for('.eventslist'))
-#     return render_template("eventsform.html", action="Add", event={})
-# # [END add]
-
 
 @crude.route('/<id>/edit', methods=['GET', 'POST'])
 def editevents(id):
@@ -153,9 +93,13 @@ def editevents(id):
 def joinevent(id):
     event_id = id
     user_id = current_user.get_id()
+    if get_model().is_event_full(id):
+        flash('Sorry! This event is already full.','danger')
+        error = 'Sorry! This event is already full.'
+        return redirect(url_for('.eventslist'))
     get_model().join_event(event_id,user_id)
     ####ABOVE THIS WORKS    
-    return redirect(url_for('.eventslist'))
+    return redirect(url_for('.viewevents', id=id))
 
 
 @crude.route('/<id>/delete')
@@ -212,52 +156,4 @@ def venuesavailable():
         "timesearchresults.html",
         venues=venues,timeslot=timeslot, day=day)
     return render_template('timeslotsearch.html', action='Search')
-
-
-
-###########################################################################################################################################################################
-##################################################                SQL Utility functions                          ##########################################################################################################
-###############################################################################################################################################################################
-#####################################################################################################################################################
-#EventID,Name, Description, VenueID, Day, Timeslot, CurrentUsers, MaxUsers
-
-builtin_list = list
-
-db = SQLAlchemy()
-
-def start_event(host, name, des,vID, date, time,currU, maxU,cost):
-
-    with db.session.connect() as cursor:
-        cursor.execute('''SELECT * FROM events WHERE Day=%s''', (date,))
-        events_on_day = cursor.fetchall()
-    if events_on_day:
-        sametime = False
-        for x in events_on_day:
-            if x[6]==time:
-                errorstring = 'That timeslot has already been taken. Please select a different timeslot or choose another venue.'
-                return render_template("sqlerror.html",errorstring=errorstring)
-                sametime = True
-        if not sametime:
-            with db.session.connect() as cursor:
-                #selecting the maxID from the table
-                cursor.execute(''' SELECT max(EventID) FROM Events''')
-                maxID = cursor.fetchone() [0]
-                maxID+=1
-                cursor.execute('''INSERT INTO events(EventID,hostname,eventname, Description, Day, Timeslot, CurrentUsers, MaxUsers,price,venue_id) VALUES (?,?,?,?,?,?,?,?,?,?)''',(maxID,host, name, des, date, time,currU, maxU,cost,vID))
-                conn.commit()
-                conn.close()
-            
-    else:
-        #selecting the maxID from the table
-        with db.session.connect() as cursor:
-            cursor.execute(''' SELECT max(EventID) FROM Events''')
-            maxID = cursor.fetchone() [0]
-            maxID+=1
-            cursor.execute('''INSERT INTO events(EventID,hostname,eventname, Description, Day, Timeslot, CurrentUsers, MaxUsers, price, Venue_ID) VALUES (?,?,?,?,?,?,?,?,?,?)''',(maxID,host, name, des, date, time,currU, maxU,cost,vID))
-            db.close()
-            db.commit()
-            db.commit()
-
-
-
 

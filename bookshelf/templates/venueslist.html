@@ -2,11 +2,13 @@
 
 {% block content %}
 
-<h3>Venues</h3>
+<h2><span class="glyphicon glyphicon-road"></span> Venues</h2>
+{% if current_user.id == 6 %}
 <a href="/venues/add" class="btn btn-success btn-sm">
   <i class="glyphicon glyphicon-plus"></i>
   Add Venue
 </a>
+{% endif %}
 
 {% for venue in venues %}
 <div class="media">

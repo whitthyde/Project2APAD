@@ -2,7 +2,20 @@
 
 {% block content %}
 
-<h3>Events</h3>
+<h2><span class="glyphicon glyphicon-calendar"></span> Events</h2>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    
+    {% for message in messages %}
+      <div class="alert {{ category }}">{{ message }}</div>
+    {% endfor %}
+    
+  {% endif %}
+{% endwith %}
+
+
+
 {% if current_user.is_authenticated %}
 <a href="/events/add" class="btn btn-success btn-sm">
   <i class="glyphicon glyphicon-plus"></i>

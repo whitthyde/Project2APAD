@@ -1,7 +1,11 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from bookshelf.model_cloudsql import User
+from bookshelf.model_cloudsql import User, Venue, Event
+from flask_wtf import Form
+from wtforms.fields import StringField, TextAreaField, DateField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
+import datetime
 
 
 class RegistrationForm(FlaskForm):

@@ -1,16 +1,4 @@
-# Copyright 2015 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+
 import os
 import logging
 from flask import Flask
@@ -50,37 +38,7 @@ class config(object):
 
 app = Flask(__name__)
 app.config.from_object(config)
-# app.config['SECRET_KEY'] = 'secret'
-# DATA_BACKEND = 'cloudsql'
-# PROJECT_ID = 'whydeyyanp2'
-# CLOUDSQL_USER = 'root'
-# CLOUDSQL_PASSWORD = 'texasfight'
-# CLOUDSQL_DATABASE = 'mydb2'
-# CLOUDSQL_CONNECTION_NAME = 'whydeyyanp2:us-central1:library'
-# app.config['PROJECT_ID'] = 'whydeyyanp2'
 
-
-# LOCAL_SQLALCHEMY_DATABASE_URI = (
-#     'mysql+pymysql://{user}:{password}@127.0.0.1:3306/{database}').format(
-#         user=CLOUDSQL_USER, password=CLOUDSQL_PASSWORD,
-#         database=CLOUDSQL_DATABASE)
-
-# LIVE_SQLALCHEMY_DATABASE_URI = (
-#     'mysql+pymysql://{user}:{password}@localhost/{database}'
-#     '?unix_socket=/cloudsql/{connection_name}').format(
-#         user=CLOUDSQL_USER, password=CLOUDSQL_PASSWORD,
-#         database=CLOUDSQL_DATABASE, connection_name=CLOUDSQL_CONNECTION_NAME)
-
-# if os.environ.get('GAE_INSTANCE'):
-#     SQLALCHEMY_DATABASE_URI = LIVE_SQLALCHEMY_DATABASE_URI
-# else:
-#     SQLALCHEMY_DATABASE_URI = LOCAL_SQLALCHEMY_DATABASE_URI
-
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = (
-#     'mysql+pymysql://{user}:{password}@127.0.0.1:3306/{database}').format(
-#         user=CLOUDSQL_USER, password=CLOUDSQL_PASSWORD,
-#         database=CLOUDSQL_DATABASE)
 
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -122,10 +80,6 @@ app.register_blueprint(lgin, url_prefix='/login')
 
 from .register import signu
 app.register_blueprint(signu, url_prefix='/signup')
-
-# Register the Bookshelf CRUD blueprint.
-from .crud import crud
-app.register_blueprint(crud, url_prefix ='/books')
 
 # Register the events CRUD blueprint.
 from .crude import crude

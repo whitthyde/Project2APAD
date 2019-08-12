@@ -1,17 +1,3 @@
-# Copyright 2015 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from bookshelf import login_manager
@@ -226,8 +212,7 @@ def join_event(event_id,user_id):
         return None
 
     if event.currentusers == event.maxusers:
-        errorstring = "This event is already full"
-        return render_template('sqlerror.html', errorstring=errorstring)
+        return None
     user = User.query.get(user_id)
     if not user:
         return None
@@ -235,13 +220,18 @@ def join_event(event_id,user_id):
     user.userevents.append(event)
     db.session.commit()
 
+def is_event_full(event_id):
+    event = Event.query.filter_by(id=event_id).first()
+    if event.maxusers == event.currentusers:
+        return True
+    return False
+
 def see_my_events(user):
     list_events = []
     list_eventids = []
     for event in user.userevents:
         list_events.append(event.eventname)
-    # for event in user.userevents:
-    #     list_events.append(event.id)
+
 
     return list_events
 
@@ -250,8 +240,7 @@ def see_my_eventids(user):
     list_eventids = []
     for event in user.userevents:
         list_events.append(event.id)
-    # for event in user.userevents:
-    #     list_events.append(event.id)
+
 
     return list_events
 
