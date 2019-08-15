@@ -76,16 +76,16 @@ def addevents():
 
 @crude.route('/<id>/edit', methods=['GET', 'POST'])
 def editevents(id):
-    book = get_model().read(id)
+    event = get_model().readevent(id)
 
     if request.method == 'POST':
         data = request.form.to_dict(flat=True)
 
-        book = get_model().update(data, id)
+        event = get_model().updateevent(data, id)
 
-        return redirect(url_for('.view', id=book['id']))
+        return redirect(url_for('.viewevents', id=event['id']))
 
-    return render_template("form.html", action="Edit", book=book)
+    return render_template("eventsform.html", action="Edit", event=event)
 
 
 
@@ -137,7 +137,7 @@ def venuesearch():
         times = get_model().venuesearch(day,venue_id)
 
         return render_template(
-        "venuesearchresults.html",
+        "VenueSearchResults.html",
         times=times)
     return render_template('venuesearch.html', action='Search')
 

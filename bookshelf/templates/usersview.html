@@ -4,7 +4,7 @@
 {% block content %}
 
 <h3>Event</h3>
-
+{% if current_user.id == 6 %}
 <div class="btn-group">
   <a href="/users/{{user.id}}/edit" class="btn btn-primary btn-sm">
     <i class="glyphicon glyphicon-edit"></i>
@@ -15,6 +15,7 @@
     Delete users
   </a>
 </div>
+
 
 <div class="media">
   <div class="media-body">
@@ -27,5 +28,11 @@
 
   </div>
 </div>
+{% endif %}
+
+
+{% if current_user.id != 6 %}
+<p>You are not authorized to view this page</p>
+{% endif %}
 
 {% endblock %}

@@ -2,8 +2,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>{{action}} Event</h3>
+<h3>{{action}} User</h3>
 
+{% if current_user.id == 6 %}
 <form method="POST" enctype="multipart/form-data">
 
   <div class="form-group">
@@ -34,6 +35,11 @@
 
   <button type="submit" class="btn btn-success">Save</button>
 </form>
+{% endif %}
+
+{% if current_user.id != 6 %}
+<p>You are not authorized to view this page</p>
+{% endif %}
 
 {% endblock %}
 {# [END form] #}

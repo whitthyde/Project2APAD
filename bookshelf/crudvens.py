@@ -46,7 +46,7 @@ def editvenue(id):
     if request.method == 'POST':
         data = request.form.to_dict(flat=True)
 
-        venue = get_model().update(data, id)
+        venue = get_model().updatevenue(data, id)
 
         return redirect(url_for('.viewvenue', id=venue['id']))
 
@@ -55,5 +55,5 @@ def editvenue(id):
 
 @crudvens.route('/<id>/delete')
 def deletevenue(id):
-    get_model().delete(id)
-    return redirect(url_for('.list'))
+    get_model().deletevenue(id)
+    return redirect(url_for('.venueslist'))
