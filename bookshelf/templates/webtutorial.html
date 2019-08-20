@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="center" align="center">
+    <h1>Hi, Welcome to Our Web App Browser Tutorial! </h1>
+    <p>Today you'll be learning our websites's basic functionalities, and how to use them!</p>
+
+    <h3>Launch Page: </h3>
+    <bk></bk>
+    <img src="/static/web_1.png" alt="android_1" height="400" width="800">
+    <p>At launch you will be brought to the info panel. Click in the top right to either login or signup. Let's Try Signing up first</p>
+    
+    <h4>Signup Page: </h4>
+    <img src="/static/web_2.png" alt="android_1" height="400" width="800">
+    <p>From here you can either traverse to the login menu if you already have an account, or you can create an account. Upon creation, you will be taken to the login page once more to login. Let's take a look at happens when you log in successfully.</p>
+
+    <h4>Login Page: </h4>
+    <img src="/static/web_3.png" alt="android_1" height="400" width="800">
+    <p>Here you will enter your credentials and login. Upon Logging In you will be brought to the Events Page.</p>
+
+    <h3>Events Page: </h3>
+    <p>Take a look at the events menu:</p>
+    <img src="/static/web_4.png" alt="android_1" height="400" width="800">
+    <p>You have eight options for you to choose from:</p>
+
+    <ol>
+    <li>Create an Event</li>
+    <li>Join an Event</li>
+    <li>See all Events</li>
+    <li>See my Events</li>
+    <li>Search Events</li>
+    <li>Search for Open Venues on a Date/Time</li>
+    <li>Search for Timeslots Open at a Venue on a Date</li>
+    <li>Logout</li>
+    </ol>
+
+    <h4>Create an Event: </h4>
+    <img src="/static/web_1.png" alt="android_1" height="400" width="800">
+    <p>In the event add page, there are 9 text fields: Event Name, Host Name, Description, TimeSlot(8-12), 
+Current Users, Max Users, Price and venue ID. After all fields are filled, the user creates the event by clicking
+The “Save” button. 
+</p>
+<h4>Join an Event</h4>
+<img src="/static/android_5.png" alt="android_4" class = "center" height="514" width="310">
+<p>Here a User can join an event by either putting the event name or the event ID in the fields. If the user does not know either, it is recommended that the user preforms a search to find the values.</p>
+<h4>See all Events</h4>
+<img src="/static/android_6.png" alt="android_4" class = "center" height="514" width="310">
+<p>On this page the user can look through all events in the system</p>
+<h4>See My Events</h4>
+<img src="/static/android_7.png" alt="android_4" class = "center" height="514" width="310">
+<p>On this page a user can see all the events they have signed up for.</p>
+<h4>Search Events</h4>
+<img src="/static/android_8.png" alt="android_4" class = "center" height="514" width="310">
+<p>On this page a user can filter through events using: eventname, date & time, and Venue ID.</p>
+
+<h4>Search for Open Venues on a Date time</h4>
+<img src="/static/android_9.png" alt="android_4" class = "center" height="514" width="310">
+<p>Here just specify a date and Venue ID, and the app will tell you all the timeslots available at a particular venue on that day.</p>
+<h4>Search for Open Timeslots at a Venue on a day.</h4>
+<img src="/static/android_10.png" alt="android_4" class = "center" height="514" width="310">
+<p>Here, simply enter in a date and timeslot, and the app will tell you the venues that are available to book at that time.</p>
+<h4>Logout</h4>
+<img src="/static/android_11.png" alt="android_4" class = "center" height="514" width="310">
+<p>Finally, here is the logout page. A user can confirm their logout attempt, or can travel back to the main menu.</p>
+
+
+</div>
+    
+{% endblock content %}

@@ -3,7 +3,7 @@ import os
 import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask import current_app, Flask, redirect, url_for
+from flask import current_app, Flask, redirect, url_for, render_template
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager 
 
@@ -49,7 +49,7 @@ login_manager.login_message_category = 'info'
 # Add a default root route.
 @app.route("/")
 def index():
-    return redirect(url_for('crude.eventslist'))
+    return render_template("info.html")
 
 # Add an error handler. This is useful for debugging the live application,
 # however, you should disable the output of the exception for production

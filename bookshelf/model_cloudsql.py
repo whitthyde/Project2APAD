@@ -186,6 +186,15 @@ def readuser(id):
         return None
     return from_sql(result)
 # [END read]
+
+def getuserid(useremail):
+    user = User.query.filter_by(email=useremail).first()
+    user_id = user.id
+    if not result:
+        return None
+    return user_id
+# [END read]
+
 # [START create]
 def createuser(data):
     user = User(**data)
@@ -222,7 +231,7 @@ def join_event(event_id,user_id):
 
 def is_event_full(event_id):
     event = Event.query.filter_by(id=event_id).first()
-    if event.maxusers == event.currentusers:
+    if event.maxusers <= event.currentusers:
         return True
     return False
 
@@ -261,6 +270,14 @@ def events_list(limit=10, cursor=None):
     next_page = cursor + limit if len(evnts) == limit else None
     return (evnts, next_page)
 # [END list]
+
+def eventgetid(event_name):
+    event = Event.query.filter_by(eventname=event_name).first()
+    event_id = event.id
+    if not event:
+        return None
+    return event_id
+# [END read]
 
 def readevent(id):
     result = Event.query.get(id)
